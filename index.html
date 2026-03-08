@@ -561,6 +561,7 @@
 <!-- Full-screen nav overlay -->
 <div class="nav-overlay" id="navOverlay">
   <div class="nav-label">— Menu —</div>
+  <div class="nav-item" data-cat="osusume">おすすめ <span class="nav-sub">RECOMMENDED</span></div>
   <div class="nav-item" data-cat="beer">ビール <span class="nav-sub">BEER</span></div>
   <div class="nav-item" data-cat="whiskey">ウィスキー <span class="nav-sub">WHISKEY</span></div>
   <div class="nav-item" data-cat="shochu">焼酎 <span class="nav-sub">SHOCHU</span></div>
@@ -575,7 +576,8 @@
 
 <!-- Sticky category strip -->
 <div class="cat-strip" id="catStrip">
-  <div class="cat-tab active" data-cat="beer">ビール</div>
+  <div class="cat-tab active" data-cat="osusume">おすすめ</div>
+  <div class="cat-tab" data-cat="beer">ビール</div>
   <div class="cat-tab" data-cat="whiskey">ウィスキー</div>
   <div class="cat-tab" data-cat="shochu">焼酎</div>
   <div class="cat-tab" data-cat="awamori">泡盛</div>
@@ -595,6 +597,23 @@
 </header>
 
 <main id="mainContent">
+
+  <!-- OSUSUME -->
+  <div class="section active" data-section="osusume">
+    <div class="section-header">
+      <div class="section-title-ja">おすすめ</div>
+      <div class="section-title-en">Recommended</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="items-grid single" id="osusume-items">
+    </div>
+    <div class="add-item-row" id="osusume-add">
+      <input class="form-input" id="osusume-add-ja" placeholder="商品名（日本語）">
+      <input class="form-input" id="osusume-add-en" placeholder="EN" style="max-width:90px">
+      <input class="form-input" id="osusume-add-price" placeholder="¥000" style="max-width:80px">
+      <button class="btn primary" onclick="addItem('osusume')">追加</button>
+    </div>
+  </div>
 
   <!-- BEER -->
   <div class="section active" data-section="beer">
@@ -903,11 +922,11 @@
   let currentEditItem = null;
 
   // ========== LOCAL STORAGE SAVE/LOAD ==========
-  const STORAGE_KEY = 'bar-menu-data-v2';
+  const STORAGE_KEY = 'bar-menu-data-v3';
 
   function saveToStorage() {
     const data = {};
-    const cats = ['beer','whiskey','shochu','awamori','kinmiya','liqueur','champagne','soft','food','oden'];
+    const cats = ['osusume','beer','whiskey','shochu','awamori','kinmiya','liqueur','champagne','soft','food','oden'];
       cats.forEach(cat => {
       const items = [];
       document.querySelectorAll(`#${cat}-items .menu-item`).forEach(el => {
@@ -928,7 +947,7 @@
     if (!raw) return;
     try {
       const data = JSON.parse(raw);
-      const cats = ['beer','whiskey','shochu','awamori','kinmiya','liqueur','champagne','soft','food','oden'];
+      const cats = ['osusume','beer','whiskey','shochu','awamori','kinmiya','liqueur','champagne','soft','food','oden'];
       cats.forEach(cat => {
         if (!data[cat]) return;
         const grid = document.getElementById(`${cat}-items`);
