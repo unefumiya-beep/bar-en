@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Drink Menu</title>
+<title>Menu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+JP:wght@300;400&display=swap" rel="stylesheet">
 <style>
@@ -569,6 +569,8 @@
   <div class="nav-item" data-cat="liqueur">リキュール <span class="nav-sub">LIQUEUR</span></div>
   <div class="nav-item" data-cat="champagne">シャンパン <span class="nav-sub">CHAMPAGNE</span></div>
   <div class="nav-item" data-cat="soft">ソフトドリンク <span class="nav-sub">SOFT DRINK</span></div>
+  <div class="nav-item" data-cat="food">おつまみ <span class="nav-sub">OTSUMAMI</span></div>
+  <div class="nav-item" data-cat="oden">おでん <span class="nav-sub">ODEN</span></div>
 </div>
 
 <!-- Sticky category strip -->
@@ -581,12 +583,14 @@
   <div class="cat-tab" data-cat="liqueur">リキュール</div>
   <div class="cat-tab" data-cat="champagne">シャンパン</div>
   <div class="cat-tab" data-cat="soft">ソフトドリンク</div>
+  <div class="cat-tab" data-cat="food">おつまみ</div>
+  <div class="cat-tab" data-cat="oden">おでん</div>
 </div>
 
 <!-- Header -->
 <header>
   <div class="header-eyebrow">Bar</div>
-  <h1 class="header-title">Drink Menu</h1>
+  <h1 class="header-title">Menu</h1>
   <span class="header-diamond">◆</span>
 </header>
 
@@ -797,6 +801,51 @@
     </div>
   </div>
 
+  <!-- FOOD -->
+  <div class="section" data-section="food">
+    <div class="section-header">
+      <div class="section-title-ja">おつまみ</div>
+      <div class="section-title-en">Otsumami</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="items-grid single" id="food-items">
+      <div class="menu-item"><div class="item-left"><div class="item-name-ja">にんしりムーチョ</div><div class="item-name-en">にんじんしりしり × カラムーチョ</div></div><div class="item-price">¥300</div><button class="edit-item-btn" onclick="editItem(this)">✎</button></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name-ja">エイヒレ</div><div class="item-name-en">DRIED STINGRAY FIN</div></div><div class="item-price">¥300</div><button class="edit-item-btn" onclick="editItem(this)">✎</button></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name-ja">ポッキー</div><div class="item-name-en">POCKY</div></div><div class="item-price">¥300</div><button class="edit-item-btn" onclick="editItem(this)">✎</button></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name-ja">MIXナッツ</div><div class="item-name-en">MIX NUTS</div></div><div class="item-price">¥300</div><button class="edit-item-btn" onclick="editItem(this)">✎</button></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name-ja">パスタスナック</div><div class="item-name-en">PASTA SNACK</div></div><div class="item-price">¥300</div><button class="edit-item-btn" onclick="editItem(this)">✎</button></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name-ja">韓国海苔</div><div class="item-name-en">KOREAN SEAWEED</div></div><div class="item-price">¥150</div><button class="edit-item-btn" onclick="editItem(this)">✎</button></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name-ja">お通しおかわり</div><div class="item-name-en">OTOSHI REFILL</div></div><div class="item-price">¥150</div><button class="edit-item-btn" onclick="editItem(this)">✎</button></div>
+    </div>
+    <div class="add-item-row" id="food-add">
+      <input class="form-input" id="food-add-ja" placeholder="商品名（日本語）">
+      <input class="form-input" id="food-add-en" placeholder="EN" style="max-width:90px">
+      <input class="form-input" id="food-add-price" placeholder="¥000" style="max-width:80px">
+      <button class="btn primary" onclick="addItem('food')">追加</button>
+    </div>
+  </div>
+
+  <!-- ODEN -->
+  <div class="section" data-section="oden">
+    <div class="section-header">
+      <div class="section-title-ja">おでん</div>
+      <div class="section-title-en">Oden</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="items-grid single" id="oden-items">
+      <div class="menu-item"><div class="item-left"><div class="item-name-ja">こんにゃく</div><div class="item-name-en">KONNYAKU</div></div><div class="item-price">¥100</div><button class="edit-item-btn" onclick="editItem(this)">✎</button></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name-ja">たまご</div><div class="item-name-en">EGG</div></div><div class="item-price">¥100</div><button class="edit-item-btn" onclick="editItem(this)">✎</button></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name-ja">大根</div><div class="item-name-en">DAIKON</div></div><div class="item-price">¥100</div><button class="edit-item-btn" onclick="editItem(this)">✎</button></div>
+      <div class="menu-item"><div class="item-left"><div class="item-name-ja">厚揚げ</div><div class="item-name-en">THICK FRIED TOFU</div></div><div class="item-price">¥100</div><button class="edit-item-btn" onclick="editItem(this)">✎</button></div>
+    </div>
+    <div class="add-item-row" id="oden-add">
+      <input class="form-input" id="oden-add-ja" placeholder="商品名（日本語）">
+      <input class="form-input" id="oden-add-en" placeholder="EN" style="max-width:90px">
+      <input class="form-input" id="oden-add-price" placeholder="¥000" style="max-width:80px">
+      <button class="btn primary" onclick="addItem('oden')">追加</button>
+    </div>
+  </div>
+
 </main>
 
 <!-- Admin FAB -->
@@ -858,8 +907,8 @@
 
   function saveToStorage() {
     const data = {};
-    const cats = ['beer','whiskey','shochu','awamori','kinmiya','liqueur','champagne','soft'];
-    cats.forEach(cat => {
+    const cats = ['beer','whiskey','shochu','awamori','kinmiya','liqueur','champagne','soft','food','oden'];
+      cats.forEach(cat => {
       const items = [];
       document.querySelectorAll(`#${cat}-items .menu-item`).forEach(el => {
         items.push({
@@ -879,7 +928,7 @@
     if (!raw) return;
     try {
       const data = JSON.parse(raw);
-      const cats = ['beer','whiskey','shochu','awamori','kinmiya','liqueur','champagne','soft'];
+      const cats = ['beer','whiskey','shochu','awamori','kinmiya','liqueur','champagne','soft','food','oden'];
       cats.forEach(cat => {
         if (!data[cat]) return;
         const grid = document.getElementById(`${cat}-items`);
