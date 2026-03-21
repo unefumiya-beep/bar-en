@@ -373,7 +373,7 @@ function deleteFixedExpenseFromDB(id) {
 }
 
 const MENU={
-  osusume:{label:'おすすめ',items:[{name:'肉じゃが',price:500},{name:'煮卵1コ',price:150},{name:'ハブ酒',price:1000},{name:'チャージ',price:300}]},
+  osusume:{label:'おすすめ',items:[{name:'煮卵1コ',price:150},{name:'ハブ酒',price:1000},{name:'チャージ',price:300},{name:'その他',price:0,custom:true}]},
   beer:{label:'ビール',items:[{name:'オリオン',price:500},{name:'コロナ',price:600},{name:'アサヒ',price:500},{name:'ハイネケン',price:650},{name:'クリアフリー',price:450},{name:'SAPPORO',price:500}]},
   whiskey:{label:'ウィスキー',items:[
     {name:'アードベック10年',price:1000},{name:'エヴァンウィリアムス',price:800},{name:'角',price:600},
@@ -684,10 +684,22 @@ function buildMenu(){
     sec.className='menu-section'+(i===0?' active':'');sec.id='sec-'+cat;
     const title=document.createElement('div');title.className='menu-section-title';title.textContent=MENU[cat].label;sec.appendChild(title);
     const grid=document.createElement('div');grid.className='menu-grid';
-    MENU[cat].items.forEach(item=>{
-      const btn=document.createElement('button');btn.className='menu-btn';
-      btn.innerHTML=`<div class="menu-btn-name">${item.name}</div><div class="menu-btn-price">¥${item.price.toLocaleString()}</div>`;
-      btn.onclick=()=>addToOrder(item);grid.appendChild(btn);
+    MENU[cat].items.forEach(function(item){
+      var btn=document.createElement('button');btn.className='menu-btn';
+      if(item.custom){
+        btn.innerHTML='<div class="menu-btn-name">'+item.name+'</div><div class="menu-btn-price" style="color:var(--cream-dim);font-size:11px;">金額を入力</div>';
+        btn.onclick=function(){
+          var amount=prompt('金額を入力（数字のみ）');
+          if(!amount)return;
+          var price=parseInt(amount.replace(/[^0-9]/g,''));
+          if(isNaN(price)||price<=0){alert('正しい金額を入力してください');return;}
+          addToOrder({name:'その他',price:price});
+        };
+      } else {
+        btn.innerHTML='<div class="menu-btn-name">'+item.name+'</div><div class="menu-btn-price">¥'+item.price.toLocaleString()+'</div>';
+        btn.onclick=function(){addToOrder(item);};
+      }
+      grid.appendChild(btn);
     });
     sec.appendChild(grid);sections.appendChild(sec);
   });
