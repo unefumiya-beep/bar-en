@@ -921,17 +921,22 @@ var auth = firebase.auth();
 function doLogin(){
   var email=document.getElementById('loginEmail').value.trim();
   var pass=document.getElementById('loginPassword').value;
-  document.getElementById('loginError').textContent='';
-  auth.signInWithEmailAndPassword(email, pass)
-    .then(function(){})
+  document.getElementById('loginError').textContent='ログイン中...';
+  console.log('Login attempt:', email);
+  firebase.auth().signInWithEmailAndPassword(email, pass)
+    .then(function(result){
+      console.log('Login success:', result.user.email);
+      document.getElementById('loginError').textContent='';
+    })
     .catch(function(e){
-      document.getElementById('loginError').textContent='メールアドレスまたはパスワードが違います';
+      console.error('Login error:', e.code, e.message);
+      document.getElementById('loginError').textContent='エラー: '+e.message;
     });
 }
 
 function doLogout(){
   if(!confirm('ログアウトしますか?'))return;
-  auth.signOut();
+  firebase.auth().signOut();
 }
 
 // ===== REALTIME SYNC =====
