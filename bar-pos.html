@@ -953,6 +953,22 @@ function startRealtimeSync(){
 }
 
 function init(){
+  // Auth state listener
+  firebase.auth().onAuthStateChanged(function(user){
+    if(user){
+      document.getElementById('loginScreen').style.display='none';
+      document.getElementById('userEmail').textContent=user.email;
+      startRealtimeSync();
+    } else {
+      document.getElementById('loginScreen').style.display='flex';
+      document.getElementById('userEmail').textContent='';
+    }
+  });
+
+  document.getElementById('loginPassword').addEventListener('keydown',function(e){
+    if(e.key==='Enter') doLogin();
+  });
+
   const now=new Date();
   document.getElementById('headerDate').textContent=`${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
   document.getElementById('monthPicker').value=now.toISOString().slice(0,7);
