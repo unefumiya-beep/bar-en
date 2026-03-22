@@ -174,7 +174,11 @@ body{background:var(--bg);color:var(--cream);font-family:'Noto Serif JP',serif;m
     <div class="slip-panel">
       <div class="slip-header">
         <div class="slip-label" id="slipLabel">— 伝票 —</div>
-        <input class="customer-input" id="customerName" placeholder="お客様のお名前" type="text" oninput="updateSlipName()">
+        <div style="display:flex;gap:6px;align-items:center;">
+        <input class="customer-input" id="customerName" placeholder="お客様のお名前" type="text" oninput="updateSlipName()" style="flex:1;">
+        <input class="customer-input" id="guestCount" placeholder="人数" type="number" min="1" style="width:65px;text-align:center;" oninput="updateGuestCount()">
+        <span style="font-size:11px;color:var(--gold-dim);white-space:nowrap;">名</span>
+      </div>
       </div>
       <div class="order-list" id="orderList"></div>
       <div class="slip-footer">
@@ -424,7 +428,7 @@ let slips=[],activeSlipId=null,slipCounter=0,pendingPayment=null,salesFilter='da
 function addSlip(){
   slipCounter++;
   const id=Date.now()+slipCounter;
-  slips.push({id,name:'',items:[]});
+  slips.push({id,name:'',guestCount:0,items:[]});
   activeSlipId=id;
   renderSlipsBar();
   renderSlip();
@@ -474,6 +478,20 @@ function updateSlipName(){
   renderSlipsBar();
 }
 
+function updateGuestCount(){
+  var slip=getActiveSlip();
+  if(!slip)return;
+  var count=parseInt(document.getElementById('guestCount').value)||0;
+  slip.guestCount=count;
+  // チャージを更新
+  slip.items=slip.items.filter(function(i){return i.name!=='チャージ';});
+  if(count>0){
+    slip.items.unshift({name:'チャージ',price:300,qty:count});
+  }
+  renderSlip();
+  renderSlipsBar();
+}
+
 function addToOrder(item){
   const slip=getActiveSlip();if(!slip)return;
   const ex=slip.items.find(o=>o.name===item.name);
@@ -496,6 +514,7 @@ function removeItem(idx){
 function renderSlip(){
   const slip=getActiveSlip();
   document.getElementById('customerName').value=slip?slip.name:'';
+  document.getElementById('guestCount').value=slip&&slip.guestCount>0?slip.guestCount:'';
   document.getElementById('slipLabel').textContent=slip?`— 伝票 ${slips.indexOf(slip)+1} —`:'— 伝票 —';
   const list=document.getElementById('orderList');
   if(!slip||slip.items.length===0){
