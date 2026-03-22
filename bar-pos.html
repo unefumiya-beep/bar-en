@@ -538,7 +538,7 @@ function checkout(method){
   if(!slip||slip.items.length===0){showToast('注文がありません');return;}
   if(!slip.guestCount||slip.guestCount<=0){showToast('人数を入力してください');document.getElementById('guestCount').focus();return;}
   const total=slip.items.reduce((s,o)=>s+o.price*o.qty,0);
-  pendingPayment={method,total,slipId:slip.id,name:slip.name||'お客様'};
+  pendingPayment={method,total,slipId:slip.id,name:slip.name||'お客様',guestCount:slip.guestCount||0};
   document.getElementById('modalTitle').textContent=method==='cash'?'現金精算':'カード精算';
   document.getElementById('modalSub').textContent=pendingPayment.name+' 様';
   document.getElementById('modalTotal').textContent='¥'+total.toLocaleString();
@@ -550,7 +550,7 @@ function checkout(method){
 function confirmCheckout(){
   if(!pendingPayment)return;
   var slip=slips.find(function(s){return s.id===pendingPayment.slipId;});
-  var sale={id:Date.now(),date:new Date().toISOString(),customer:pendingPayment.name,method:pendingPayment.method,total:pendingPayment.total,items:(slip?slip.items:[]).map(function(o){return {name:o.name,price:o.price,qty:o.qty};})};
+  var sale={id:Date.now(),date:new Date().toISOString(),customer:pendingPayment.name,guestCount:pendingPayment.guestCount||0,method:pendingPayment.method,total:pendingPayment.total,items:(slip?slip.items:[]).map(function(o){return {name:o.name,price:o.price,qty:o.qty};})};
   saveSale(sale);
   closeModal();
   showToast('¥'+pendingPayment.total.toLocaleString()+' 精算完了 ✓');
@@ -768,7 +768,7 @@ function showReceipt(saleId){
     var dt=new Date(d.date);
     var dtStr=(dt.getMonth()+1)+'/'+dt.getDate()+' '+('0'+dt.getHours()).slice(-2)+':'+('0'+dt.getMinutes()).slice(-2);
     document.getElementById('receiptName').textContent=d.customer+' 様';
-    document.getElementById('receiptTime').textContent=dtStr;
+    document.getElementById('receiptTime').textContent=dtStr+(d.guestCount>0?'　'+d.guestCount+'名':'');
     document.getElementById('receiptTotal').textContent='¥'+d.total.toLocaleString();
     document.getElementById('receiptMethod').innerHTML='<span class="'+(d.method==='cash'?'badge-cash':'badge-card')+'">'+(d.method==='cash'?'現金':'カード')+'</span>';
     var itemsHtml='';
@@ -801,7 +801,7 @@ function showDayDetail(dayKey){
     var itemsStr=d.items.map(function(i){return i.name+(i.qty>1?' ×'+i.qty:'');}).join('、');
     html+='<div style="padding:10px 0;border-bottom:1px solid rgba(201,168,76,0.1);">'
       +'<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;gap:8px;">'
-      +'<span style="font-size:13px;color:var(--cream);flex-shrink:0;">'+d.customer+'</span>'
+      +'<span style="font-size:13px;color:var(--cream);flex-shrink:0;">'+d.customer+(d.guestCount>0?' <span style="font-size:11px;color:var(--gold-dim);">'+d.guestCount+'名</span>':'')+'</span>'
       +'<span style="font-family:Cormorant Garamond,serif;font-size:15px;color:var(--gold-light);flex-shrink:0;">¥'+d.total.toLocaleString()+'</span>'
       +'</div>'
       +'<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">'
